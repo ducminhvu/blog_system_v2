@@ -1,0 +1,39 @@
+<% provide(:title, "#{@entry.title}") %>
+<% post_user = @entry.user %>
+<div class="row">
+  <aside class="col-md-2">
+    <section class="user_info">
+      <%= link_to gravatar_for(post_user, size: 50), post_user %>
+      <h1><%= post_user.name %></h1>
+      <span><%= link_to "view profile", post_user %></span>
+      <span><%= pluralize(post_user.entries.count, "entry") %></span>
+    </section>
+  </aside>
+  <div class="col-md-10">
+    <h3>Title: <%= @entry.title %></h3><hr>
+    <%= @entry.content %><hr>
+    <span class="left">Posted <%= time_ago_in_words(@entry.created_at) %> ago.</span>
+  </div>
+</div>
+<h3> Comment </h3>
+<div>
+  <% @comments.each do |comment| %>
+    <%= link_to comment.user.name, comment.user %>
+    : <%= comment.content %>
+    <hr>
+  <% end %>
+</div>
+<% if logged_in? %>
+<h3>Write a comment:</h3>
+<%= form_for(@new_comment) do |f| %>
+  <div class="field">
+    <%= f.hidden_field :entry_id, value: @entry.id%>
+    <%= f.text_area :content, placeholder: "Content new comment..." %>
+  </div>
+  <div class="row">
+    <aside class="col-md-2">
+      <%= f.submit "Post", class: "btn btn-primary" %>
+    </aside>
+  </div>
+<% end %>
+<% end %>

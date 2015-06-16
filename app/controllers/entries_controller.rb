@@ -15,6 +15,13 @@ class EntriesController < ApplicationController
   def destroy
   end
 
+  def show
+    @entry = Entry.find(params[:id])
+    @comments = @entry.comments
+    @new_comment = Comment.new
+    # @comments = @entry.comments.paginate(page: params[:page])    
+  end
+
   private
 
     def entries_params
